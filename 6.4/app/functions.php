@@ -29,8 +29,7 @@ function sanitize($value) {
 }
 
 function authenticate_user($email, $password) {
-    global $config;
-    $users = $config['users'];
+    $users = CONFIG['users'];
 
     if (!isset($users[$email])) {
         return false;

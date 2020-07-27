@@ -12,7 +12,7 @@ if (is_post()) {
     if (empty($term) || empty($definition)) {
         // TODO: display message
     } else {
-        $config['provider']->add_term($term, $definition);
+        Data::add_term($term, $definition);
         redirect('index.php');
     }
 }

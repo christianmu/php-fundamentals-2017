@@ -13,7 +13,7 @@ if (is_get()) {
         die();
     }
 
-    $term = $config['provider']->get_term($key);
+    $term = Data::get_term($key);
 
     if ($term === false) {
         view('not_found');
@@ -31,7 +31,7 @@ if (is_post()) {
     if (empty($term) || empty($definition) || empty($original_term)) {
         // TODO: display message
     } else {
-        $config['provider']->update_term($original_term, $term, $definition);
+        Data::update_term($original_term, $term, $definition);
         redirect('index.php');
     }
 }

@@ -1,73 +1,70 @@
 <?php
 
-//require('glossaryterm.class.php');
-
-class MySqlDataProvider {
-
-    function __construct() {
-    }
-    
+class MySqlDataProvider extends DataProvider {
     public function get_terms() {
         $db = $this->connect();
 
-        if ($db === null) {
+        if ($db == null) {
             return [];
         }
 
-        $stmt = $db->query('SELECT * FROM glossary_terms', PDO::FETCH_CLASS, 'GlossaryTerm');
+        $query = $db->query('SELECT * FROM terms');
 
-        $data = $stmt->fetchAll();
+        $data = $query->fetchAll(PDO::FETCH_CLASS, 'GlossaryTerm');
 
-
-        $stmt = null;
+        $query = null;
         $db = null;
 
         return $data;
     }
     
-    public function get_term($id) {
+    public function get_term($term) {
         $db = $this->connect();
-        
-        if ($db === null) {
-            return false;
+
+        if ($db == null) {
+            return;
         }
 
-        $sql = 'SELECT * FROM glossary_terms WHERE id = :id';
-        $stmt = $db->prepare($sql);
+        $sql = 'SELECT * FROM terms WHERE id = :id';
+        $smt = $db->prepare($sql);
 
-        $stmt->execute([':id'=> $id]);
+        $smt->execute([
+            ':id' => $term,
+        ]);
 
-        $data = $stmt->fetchAll(PDO::FETCH_CLASS, 'GlossaryTerm');
+        $data = $smt->fetchAll(PDO::FETCH_CLASS, 'GlossaryTerm');
+
+        $smt = null;
+        $db = null;
 
         if (empty($data)) {
-            return false;
+            return;
         }
 
-        $stmt = null;
-        $db = null;
+        
 
         return $data[0];
     }
     
     public function search_terms($search) {
         $db = $this->connect();
-        
-        if ($db === null) {
+
+        if ($db == null) {
             return [];
         }
 
-        $sql = 'SELECT * FROM glossary_terms WHERE term LIKE :search OR definition LIKE :search';
-        $stmt = $db->prepare($sql);
+        $sql = 'SELECT * FROM terms WHERE term LIKE :search OR definition LIKE :search';
+        $smt = $db->prepare($sql);
 
-        $stmt->execute([':search'=> "%$search%"]);
+        // style%
 
-        $data = $stmt->fetchAll(PDO::FETCH_CLASS, 'GlossaryTerm');
+        $smt->execute([
+            ':search' => '%'.$search.'%',
+        ]);
 
-        if (empty($data)) {
-            return [];
-        }
+        $data = $smt->fetchAll(PDO::FETCH_CLASS, 'GlossaryTerm');
 
-        $stmt = null;
+        $smt = null;
         $db = null;
 
         return $data;
@@ -75,62 +72,66 @@ class MySqlDataProvider {
     
     public function add_term($term, $definition) {
         $db = $this->connect();
-        
-        if ($db === null) {
+
+        if ($db == null) {
             return;
         }
 
-        $sql = 'INSERT INTO glossary_terms (term, definition) VALUES (:term, :definition)';
-        $stmt = $db->prepare($sql);
+        $sql = 'INSERT INTO terms (term, definition) VALUES (:term, :definition)';
+        $smt = $db->prepare($sql);
 
-        $stmt->execute([':term'=> $term, ':definition' => $definition]);
+        $smt->execute([
+            ':term' => $term,
+            ':definition' => $definition
+        ]);
 
-        $stmt = null;
+        $smt = null;
         $db = null;
     }
     
-    public function update_term($id, $term, $definition) {
+    public function update_term($original_term, $new_term, $definition) {
         $db = $this->connect();
-        
-        if ($db === null) {
+
+        if ($db == null) {
             return;
         }
 
-        $sql = 'UPDATE glossary_terms set term = :term, definition = :definition WHERE id = :id';
-        $stmt = $db->prepare($sql);
+        $sql = 'UPDATE terms SET term = :term, definition = :definition WHERE id = :id';
+        $smt = $db->prepare($sql);
 
-        $stmt->execute([':term'=> $term, ':definition' => $definition, ':id' => $id]);
+        $smt->execute([
+            ':term' => $new_term,
+            ':definition' => $definition,
+            ':id' => $original_term
+        ]);
 
-        $stmt = null;
+        $smt = null;
         $db = null;
     }
     
-    public function delete_term($id) {
+    public function delete_term($term) {
         $db = $this->connect();
-        
-        if ($db === null) {
+
+        if ($db == null) {
             return;
         }
 
-        $sql = 'DELETE FROM glossary_terms WHERE id = :id';
-        $stmt = $db->prepare($sql);
+        $sql = 'DELETE FROM terms WHERE id = :id';
+        $smt = $db->prepare($sql);
 
-        $stmt->execute([':id'=> $id]);
+        $smt->execute([
+            ':id' => $term
+        ]);
 
-        $stmt = null;
+        $smt = null;
         $db = null;
     }
 
     private function connect() {
-        $con_str = 'mysql:dbname=glossary;host=localhost;port=8889';
-        $user = 'root';
-        $password = 'root';
-
         try {
-            return new PDO($con_str, $user, $password);
+            return new PDO($this->source, CONFIG['db_user'], CONFIG['db_password']);
         } catch (PDOException $e) {
             return null;
         }
-        
     }
 }

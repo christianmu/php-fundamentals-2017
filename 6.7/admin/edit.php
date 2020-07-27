@@ -6,14 +6,14 @@ require('../app/app.php');
 ensure_user_is_authenticated();
 
 if (is_get()) {
-    $key = sanitize($_GET['id']);
+    $key = sanitize($_GET['key']);
 
     if (empty($key)) {
         view('not_found');
         die();
     }
 
-    $term = $config['provider']->get_term($key);
+    $term = Data::get_term($key);
 
     if ($term === false) {
         view('not_found');
@@ -26,12 +26,12 @@ if (is_get()) {
 if (is_post()) {
     $term = sanitize($_POST['term']);
     $definition = sanitize($_POST['definition']);
-    $id = sanitize($_POST['id']);
+    $original_term = sanitize($_POST['original-term']);
 
-    if (empty($term) || empty($definition) || empty($id)) {
+    if (empty($term) || empty($definition) || empty($original_term)) {
         // TODO: display message
     } else {
-        $config['provider']->update_term($id, $term, $definition);
+        Data::update_term($original_term, $term, $definition);
         redirect('index.php');
     }
 }
