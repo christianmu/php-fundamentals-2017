@@ -1,4 +1,4 @@
-# [PHP Fundamentlas][published url]
+# [PHP Fundamentals][published url]
 ## Instructor: [Jeremy McPeak][instructor url]
 
 
