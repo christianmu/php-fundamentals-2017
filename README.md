@@ -1,23 +1,15 @@
 # [PHP Fundamentals][published url]
-## Instructor: [Jeremy McPeak][instructor url]
 
+Auf YouTube: [PHP Fundamentals - Beginner to Advanced](https://www.youtube.com/playlist?list=PLxByfRWvJ-EXSld7_mj5Lgr9QxZgLPeVI)  
+Auf Tuts+: [PHP Fundamentals][published url]
 
-Learn the fundamentals of PHP and object-oriented programming in this free PHP tutorial. Jeremy McPeak will help you learn PHP and use it to write web apps.
-
-PHP is one of the most used languages on the web. The vast majority of websites you visit are built with PHP on the back-end, and learning PHP is a requirement for writing plugins or themes for a CMS like WordPress. PHP is fast, but even better, it's easy to learn and easy to use for writing web applications.
-
-In this detailed PHP tutorial, Envato Tuts+ instructor Jeremy McPeak will teach you the fundamentals of PHP programming. You'll start with the basics, learning how PHP works and writing simple PHP loops and functions. Then you'll build up to coding classes for simple object-oriented programming (OOP). Along the way, you'll learn all the most important skills for writing apps for the web: you'll get a chance to practice responding to GET and POST requests, parsing JSON, authenticating users, and using a MySQL database.
-
-To get an idea of what's possible with PHP, check out some of the PHP scripts on CodeCanyon or the WordPress plugins and themes on Envato Elements.
-
-
+GitHub: [php-fundamentals-2017](https://github.com/christianmu/php-fundamentals-2017)
 
 ## Source Files Description
 
-
 This repository contains the source to each exercise and sample project that was built throughout the course.
 
-------
+---
 
 These are source files for the Envato Tuts+ course: [PHP Fundamentals][published url]
 
